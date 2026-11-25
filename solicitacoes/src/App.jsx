@@ -4,6 +4,7 @@ import SolicitacoesPage from "./pages/SolicitacoesPage";
 import NovaSolicitacaoPage from "./pages/NovaSolicitacaoPage";
 import RevisaoClinicaPage from "./pages/RevisaoClinicaPage";
 import PerfilPage from "./pages/PerfilPage";
+import RegistroAcessosPage from "./pages/RegistroAcessosPage"; // NOVO
 
 export default function App() {
   const [pagina, setPagina] = useState("/painel");
@@ -28,12 +29,13 @@ export default function App() {
 
   if (pagina === "/perfil") {
     conteudo = <PerfilPage />;
-  } else if (pagina === "/revisao") {
+  } else if (pagina === "/acessos") {            // NOVO
+    conteudo = <RegistroAcessosPage />;          // NOVO
+  } else if (pagina === "/revisao") {            // NOVO (else if)
     conteudo = <RevisaoClinicaPage pedidoInicial={pedidoInicial} />;
   } else if (pagina === "/solicitacoes/nova") {
     conteudo = <NovaSolicitacaoPage />;
   } else {
-    // Mantém o comportamento original das outras opções da sidebar.
     conteudo = (
       <SolicitacoesPage
         onVerCandidatos={abrirRevisao}
