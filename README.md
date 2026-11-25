@@ -6,4 +6,4 @@ Quem for mexer, por favor colocar os seguinte comando abaixo:
 { -git commit -m "nome(numeracao)" }
 {-git push}
 
-(Lembrar de baixar a linguagem GIT)
+(Lembrar de baixar a Linguagem GIT)
