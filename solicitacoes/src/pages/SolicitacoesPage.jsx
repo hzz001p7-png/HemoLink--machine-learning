@@ -32,7 +32,7 @@ import {
    ============================================================ */
 
 const API_URL = ""; // ex.: "https://seu-backend.com/api"
-const USE_MOCK = true; // coloque false quando a API estiver pronta
+const USE_MOCK = true; // coloque false quando a API estiver pronta, pelo amor de Deus
 
 const MOCK = {
   itens: [
@@ -112,7 +112,7 @@ function acaoDoPedido(s) {
 }
 
 /* ============================================================
-   4. COMPONENTES BASE
+   4.  BASE
    ============================================================ */
 
 function Skeleton({ className = "" }) {

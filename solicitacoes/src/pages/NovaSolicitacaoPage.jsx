@@ -1,3 +1,6 @@
+// AVISO: Kleber, presta atencao nos comentarios pfv
+// Tipo sanguíneo selecionado pelo usuário.
+// Backend:salvar no campo tipo_sanguineo do pedido. POR FAVOR
 import { useState } from "react";
 
 const tiposSanguineos = [
@@ -13,13 +16,37 @@ const tiposSanguineos = [
 
 export default function NovaSolicitacaoPage() {
   const [tipo, setTipo] = useState("A+");
+  // Quantidade de bolsas solicitadas
   const [bolsas, setBolsas] = useState(3);
+  // Nível de urgência da solicitação.
   const [urgencia, setUrgencia] = useState("Urgente");
+  // Tipo de hemocomponente solicitado.
   const [componente, setComponente] = useState("Concentrado de hemácias");
+  // Mensagens de retorno para o usuário após ações no formulário.
   const [mensagem, setMensagem] = useState("");
 
   function enviarPedido(event) {
     event.preventDefault();
+     /*
+    Kleber:
+
+    Dados esperados:
+    - tipo
+    - bolsas
+    - urgencia
+    - componente
+    - estado
+    - cidade
+    - hospital
+    - observacoes
+    - usuario_id
+
+    O código do pedido deve ser gerado pelo backend,
+    tem que evitar os códigos duplicados.
+
+    Kleber registrar o usuário responsável
+    e cria a solicitação com status "Aguardando revisão clínica".
+  */
     setMensagem("Pedido enviado para revisão clínica.");
   }
 
@@ -182,7 +209,9 @@ export default function NovaSolicitacaoPage() {
                   <select className="mt-2 h-10 w-full rounded-lg border px-3 font-normal">
                     <option>Recife</option>
                     <option>Olinda</option>
-                    <option>Caruaru</option>
+                    <option>Joao Pessoa</option>
+                    <option>Salvador</option>
+                    <option>Alagoas</option>
                   </select>
                 </label>
               </div>
@@ -193,6 +222,9 @@ export default function NovaSolicitacaoPage() {
                   <option>Hospital Santa Clara</option>
                   <option>Hospital Esperança</option>
                   <option>Hemope — Recife</option>
+                  <option>Hospital de Emergência e Trauma Senador Humberto Lucena</option>
+                  <option>Hospital Municipal de Salvador</option>
+                  <option>Hospital Geral do Estado Professor Osvaldo Brandão Vilela</option>
                 </select>
               </label>
             </section>

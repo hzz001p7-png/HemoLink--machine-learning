@@ -133,7 +133,7 @@ function BadgeUrgencia({ urgencia }) {
 }
 
 /* ============================================================
-   FILA (coluna esquerda)
+   FILA (col esquerda)
    ============================================================ */
 
 function ItemFila({ item, ativo, disabled, onClick }) {
