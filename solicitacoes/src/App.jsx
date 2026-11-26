@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import SolicitacoesPage from "./pages/SolicitacoesPage";
 import NovaSolicitacaoPage from "./pages/NovaSolicitacaoPage";
 import RevisaoClinicaPage from "./pages/RevisaoClinicaPage";
+import DoadoresPage from "./pages/DoadoresPage";
 import PerfilPage from "./pages/PerfilPage";
 import RegistroAcessosPage from "./pages/RegistroAcessosPage"; // NOVO
 
@@ -30,7 +31,9 @@ export default function App() {
   if (pagina === "/perfil") {
     conteudo = <PerfilPage />;
   } else if (pagina === "/acessos") {            // NOVO
-    conteudo = <RegistroAcessosPage />;          // NOVO
+    conteudo = <RegistroAcessosPage />;    
+    } else if (pagina === "/doadores") {
+  conteudo = <DoadoresPage />;      // NOVO
   } else if (pagina === "/revisao") {            // NOVO (else if)
     conteudo = <RevisaoClinicaPage pedidoInicial={pedidoInicial} />;
   } else if (pagina === "/solicitacoes/nova") {
