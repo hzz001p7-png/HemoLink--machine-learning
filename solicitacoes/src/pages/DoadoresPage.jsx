@@ -2,11 +2,6 @@
 import { useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-/* ============================================================
-   Página Doadores — protótipo visual (dados fictícios)
-   Só mostra código, cidade e distância: dados pessoais ficam
-   restritos à equipe (LGPD).
-   ============================================================ */
 
 const TIPOS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -159,9 +154,6 @@ function Pino({ doador, ativo, onSelecionar }) {
   );
 }
 
-/* ============================================================
-   PÁGINA
-   ============================================================ */
 
 export default function DoadoresPage() {
   const [estado, setEstado] = useState("PE");
