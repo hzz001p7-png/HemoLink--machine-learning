@@ -5,7 +5,7 @@
 
 create table if not exists public.doadores (
     id uuid primary key default gen_random_uuid(),
-    perfil_id uuid references public.perfis(id) on delete set null,
+    perfil_id bigint references public.perfis(id) on delete set null,
     codigo text unique not null, -- ex.: 'D-0301'
     tipo_sanguineo text not null check (tipo_sanguineo in ('A+','A-','B+','B-','AB+','AB-','O+','O-','Não sei')),
     estado char(2) not null,
@@ -56,7 +56,7 @@ create table if not exists public.solicitacoes (
 -- Tabela de Feedback Loop (Human-in-the-Loop) para retreinamento contínuo do modelo
 create table if not exists public.recomendacoes_ml (
     id uuid primary key default gen_random_uuid(),
-    solicitacao_id uuid references public.solicitacoes(id) on delete cascade,
+    solicitacao_id bigint references public.solicitacoes(id) on delete cascade,
     doador_codigo text not null,
     modelo_versao text not null,
     ranking integer not null,
