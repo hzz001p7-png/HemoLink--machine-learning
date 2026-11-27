@@ -387,40 +387,73 @@ def criar_solicitacao(payload: CreateSolicitacaoInput) -> Dict[str, Any]:
             detail=f"Tipo sanguíneo inválido: '{payload.tipo}'.",
         )
 
-    numero = _NEXT_NUMERO
-    _NEXT_NUMERO += 1
-    pid = str(numero)
     estado = payload.estado.strip().upper()
     cidade = payload.cidade.strip()
     urgencia = normalize_urgency(payload.urgencia)
+    agora = datetime.now(timezone.utc).isoformat()
 
-    pedido: Dict[str, Any] = {
+    dados = {
+        "tipo_sanguineo": bt,
+        "componente": payload.componente.strip() or "Concentrado de hemácias",
+        "bolsas_total": payload.bolsas,
+        "urgencia": urgencia,
+        "estado": estado,
+        "cidade": cidade,
+        "hospital": payload.hospital.strip(),
+        "observacoes": payload.observacoes,
+        "status": "na_fila",
+        "checklist": {
+            "compatibilidadeTransfusional": False,
+            "elegibilidadeDoadores": False,
+            "urgenciaPedido": False,
+        },
+        "criado_em": agora,
+    }
+
+    if supabase is None:
+        raise HTTPException(status_code=503, detail="Supabase não conectado.")
+
+    try:
+        resposta = (
+            supabase.table("solicitacoes")
+            .insert(dados)
+            .execute()
+        )
+        registro = resposta.data[0]
+    except Exception as erro:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro ao salvar solicitação: {str(erro)}",
+        )
+
+    numero = registro.get("numero", registro["id"])
+    pid = str(registro["id"])
+
+    pedido = {
         "id": pid,
         "numero": numero,
         "tipoSanguineo": bt,
-        "hospital": payload.hospital.strip(),
-        "componente": payload.componente.strip() or "Concentrado de hemácias",
+        "hospital": dados["hospital"],
+        "componente": dados["componente"],
         "bolsasRecebidas": 0,
         "bolsasTotal": payload.bolsas,
         "estado": estado,
         "cidade": cidade,
-        "regiao": f"{cidade} - {estado}" if cidade and estado else cidade or estado,
+        "regiao": f"{cidade} - {estado}",
         "urgencia": urgencia,
         "status": "na_fila",
         "etapaAtual": 2,
         "etapaTotal": 5,
         "etapaNome": "Candidatos prontos",
         "observacoes": payload.observacoes,
-        "checklist": {
-            "compatibilidadeTransfusional": False,
-            "elegibilidadeDoadores": False,
-            "urgenciaPedido": False,
-        },
+        "checklist": dados["checklist"],
         "candidatos": [],
-        "criadoEm": datetime.now(timezone.utc).isoformat(),
+        "criadoEm": registro.get("criado_em", agora),
     }
+
     pedido["candidatos"] = _rank_for_pedido(pedido)
     _PEDIDOS_STORE[pid] = pedido
+
     return pedido
 
 
