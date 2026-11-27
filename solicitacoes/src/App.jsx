@@ -1,15 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "./lib/supabase";
+import LoginPage from "./pages/LoginPage";
+
 import Sidebar from "./components/Sidebar";
 import SolicitacoesPage from "./pages/SolicitacoesPage";
 import NovaSolicitacaoPage from "./pages/NovaSolicitacaoPage";
 import RevisaoClinicaPage from "./pages/RevisaoClinicaPage";
 import DoadoresPage from "./pages/DoadoresPage";
 import PerfilPage from "./pages/PerfilPage";
-import RegistroAcessosPage from "./pages/RegistroAcessosPage"; // NOVO
+import RegistroAcessosPage from "./pages/RegistroAcessosPage";
 
 export default function App() {
+  const [sessao, setSessao] = useState(null);
+  const [verificando, setVerificando] = useState(true);
   const [pagina, setPagina] = useState("/painel");
   const [pedidoInicial, setPedidoInicial] = useState(null);
+
+  useEffect(() => {
+    async function verificarSessao() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (!error) {
+        setSessao(data.session);
+      }
+
+      setVerificando(false);
+    }
+
+    verificarSessao();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSessao(session);
+      setVerificando(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   function abrirRevisao(pedidoOuNumero = null) {
     const numero =
@@ -22,19 +50,30 @@ export default function App() {
   }
 
   function navegar(novaPagina) {
-    if (novaPagina !== "/revisao") setPedidoInicial(null);
+    if (novaPagina !== "/revisao") {
+      setPedidoInicial(null);
+    }
+
     setPagina(novaPagina);
+  }
+
+  if (verificando) {
+    return <div className="p-8">Verificando acesso...</div>;
+  }
+
+  if (!sessao) {
+    return <LoginPage />;
   }
 
   let conteudo;
 
   if (pagina === "/perfil") {
     conteudo = <PerfilPage />;
-  } else if (pagina === "/acessos") {            // NOVO
-    conteudo = <RegistroAcessosPage />;    
-    } else if (pagina === "/doadores") {
-  conteudo = <DoadoresPage />;      // NOVO
-  } else if (pagina === "/revisao") {            // NOVO (else if)
+  } else if (pagina === "/acessos") {
+    conteudo = <RegistroAcessosPage />;
+  } else if (pagina === "/doadores") {
+    conteudo = <DoadoresPage />;
+  } else if (pagina === "/revisao") {
     conteudo = <RevisaoClinicaPage pedidoInicial={pedidoInicial} />;
   } else if (pagina === "/solicitacoes/nova") {
     conteudo = <NovaSolicitacaoPage />;
