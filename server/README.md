@@ -44,4 +44,4 @@ A tela de **Revisão Clínica** (`RevisaoClinicaPage.jsx`) passará a consumir o
 
 ## Integração com o Supabase
 
-Configure `server/.env` com `SUPABASE_URL` e `SUPABASE_KEY` e execute o DDL de `server/supabase_schema.sql` no SQL Editor do Supabase. Enquanto o `.env` não estiver preenchido, a API opera automaticamente em modo de demonstração com o catálogo local de doadores.
+Configure `server/.env` com `SUPABASE_URL` e `SUPABASE_KEY` e execute o DDL de `server/supabase_schema.sql` no SQL Editor do Supabase. Enquanto o `.env` não estiver preenchido, a API opera automaticamente em modo de demonstração com o catálogo local de doadores..
